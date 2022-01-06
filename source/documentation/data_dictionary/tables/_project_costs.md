@@ -1,4 +1,4 @@
-## costs
+## project costs
 
 Different types of cost that make up the grant applicant is asking for.
 
