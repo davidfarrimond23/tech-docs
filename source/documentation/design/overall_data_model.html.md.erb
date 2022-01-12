@@ -3,15 +3,11 @@ title: Design
 weight: 2
 ---
 
-# As is data model
+# Overall data model
 
-This is the data model that underpins the current system. Some of it was implemented 
+This is the overall data model that underpins the current system. Some of it was implemented 
 with tactical goals in mind, and so will change to be more future.
 
-This model needs to be updated with:
-
-- Legal agreements tables for small and medium grant applications (agreements, funding_applications_legal_sigs etc)
-- pre-application tables.  For project enquiries and expressions of interest (pa_project_enquiries, pa_expressions_of_interest etc).
 
 <%= partial 'partials/mermaid' %>
 
@@ -44,6 +40,7 @@ classDiagram
     projects ..> funding_applications : 0..* to 1
     project_costs ..> projects : 0..* to 1
     payment_details ..> funding_applications : 0..* to 1
+    agreements ..> funding_applications : 0..1 to 1 
     legal_signatories ..> organisations : 0..2 to 1
     released_forms ..> projects : 0..* to 1
 
@@ -63,6 +60,13 @@ classDiagram
     spend ..> funding_applications_spend : 1 to 1
     spend ..> cost_types : 0..* to 1
     funding_applications ..> funding_applications_spend : 1 to 1..*
+
+    statutory_permission_or_licences ..> sfx_pts_payments
+
+    pre_applications ..> users : 0..* to 1
+    pre_applications ..> organisations : 0..* to 1
+    pa_expressions_of_interest ..> pre_applications : 1..* to 1
+    pa_project_enquiries ..> pre_applications : 1..* to 1
 
    class funding_applications{
       id: UUID **PK**
@@ -475,14 +479,6 @@ classDiagram
       updated_at:               Timestamp
     }
 
-    class funding_applications_legal_sigs {
-      id:                       UUID **PK**
-      legal_signatory_id:   UUID **FK**
-      spend_id:                 UUID **FK**
-      created_at:               Timestamp
-      updated_at:               Timestamp
-    }
-
     class funding_applications_nccs {
       id:                       UUID **PK**
       funding_application_id:   UUID **FK**
@@ -505,6 +501,97 @@ classDiagram
       evidence_of_support_id:   UUID **FK**
       created_at:               Timestamp
       updated_at:               Timestamp
+    }
+
+    class sfx_pts_payments {
+      id:                       UUID **PK**
+      salesforce_case_id:       text
+      email_address:            character varying
+      pts_answers_json:         jsonb
+      application_type:         integer
+      salesforce_pts_form_record_id: character varying
+      submitted_on:             Timestamp
+      created_at:               Timestamp
+      updated_at:               Timestamp
+    }
+
+    class statutory_permission_or_licences {
+      id:                       UUID **PK**
+      details_json:             jsonb
+      sfx_pts_payment_id:       UUID **FK**
+      created_at:               Timestamp
+      updated_at:               Timestamp
+    }
+
+    class pre_applications {
+      id: UUID **PK**
+      user_id: integer **FK** 
+      organisation_id: UUID **FK**
+      project_reference_number: text
+      salesforce_case_id: text
+      salesforce_case_number: text
+      submitted_on: text
+      submitted_payload
+      created_at: Timestamp
+      updated_at: Timestamp
+    }
+
+    class pa_project_enquiries {
+      id: UUID **PK**
+      pre_application_id: UUID **FK**
+      previous_contact_name: text
+      heritage_focus: text
+      what_project_does: text
+      programme_outcomes: text
+      project_reasons: text
+      project_participants: text
+      project_timescales: text
+      project_likely_cost: text
+      working_title: text
+      potential_funding_amount: Integer
+      salesforce_project_enquiry_id
+      salesforce_pef_reference
+      created_at: Timestamp
+      updated_at: Timestamp
+    }
+
+    class pa_expressions_of_interest {
+      id: UUID **PK**
+      pre_application_id: UUID **FK**
+      heritage_focus: text
+      what_project_does: text
+      project_outcomes: text
+      project_reasons: text
+      project_timescales: text
+      overall_cost: text
+      working_title: text
+      potential_funding_amount: Integer
+      likely_submission_description: text
+      previous_contact_name: text
+      salesforce_expression_of_interest_id: character varying
+      salesforce_eoi_reference: character varying
+      created_at: Timestamp
+      updated_at: Timestamp
+    }
+
+    class funding_applications_legal_sigs {
+      id: UUID **PK**
+      funding_application_id: UUID **FK**
+      legal_signatory_id: UUID **FK**
+      signed_terms_submitted_on: Timestamp
+      created_at: Timestamp
+      updated_at: Timestamp
+    }
+
+    class agreements {
+      id: UUID **PK**
+      funding_application_id: UUID **FK**
+      grant_agreed_at: Timestamp
+      terms_agreed_at: Timestamp
+      project_details_html: text
+      terms_html: text
+      created_at: Timestamp
+      updated_at: Timestamp
     }
 
 </div>

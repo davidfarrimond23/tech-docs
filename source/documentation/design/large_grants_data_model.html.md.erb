@@ -1,0 +1,40 @@
+---
+title: Design
+weight: 2
+---
+
+# Large grants data model
+
+Only contains two tables at the moment for permission to start.  
+Each table stores applicant answers as jsonb.
+These answers are rendered into a pdf at the end of the permission
+to start journey.
+
+<%= partial 'partials/mermaid' %>
+
+<div class="mermaid">
+classDiagram
+
+    statutory_permission_or_licences ..> sfx_pts_payments
+
+    class sfx_pts_payments {
+      id:                       UUID **PK**
+      salesforce_case_id:       text
+      email_address:            character varying
+      pts_answers_json:         jsonb
+      application_type:         integer
+      salesforce_pts_form_record_id: character varying
+      submitted_on:             Timestamp
+      created_at:               Timestamp
+      updated_at:               Timestamp
+    }
+
+    class statutory_permission_or_licences {
+      id:                       UUID **PK**
+      details_json:             jsonb
+      sfx_pts_payment_id:       UUID **FK**
+      created_at:               Timestamp
+      updated_at:               Timestamp
+    }
+
+</div>
