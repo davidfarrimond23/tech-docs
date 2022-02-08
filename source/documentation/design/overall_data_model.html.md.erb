@@ -29,7 +29,7 @@ classDiagram
     funding_applications_vlntrs ..> funding_applications : 0..1 to 1
     funding_applications_eos ..> funding_applications : 0..1 to 1
     funding_applications_costs ..> funding_applications : 0..1 to 1
-    funding_applications_legal_sigs ..> funding_applications : 0..1 to 1
+    funding_applications_legal_sigs ..> funding_applications : 0..* to 1
     people_addresses ..> addresses : 1 to 1
     organisations <.. organisations_org_types: 0..* to 1
     organisations_org_types ..> org_types: 1 to 1
@@ -41,7 +41,6 @@ classDiagram
     project_costs ..> projects : 0..* to 1
     payment_details ..> funding_applications : 0..* to 1
     agreements ..> funding_applications : 0..1 to 1 
-    legal_signatories ..> organisations : 0..2 to 1
     released_forms ..> projects : 0..* to 1
 
     gp_open_medium ..> funding_applications : 0..* to 1
@@ -55,7 +54,7 @@ classDiagram
     funding_applications_vlntrs ..> volunteers : 0..1 to 1
     funding_applications_eos ..> evidence_of_support : 0..1 to 1
     funding_applications_costs ..> project_costs : 0..1 to 1
-    funding_applications_legal_sigs ..> legal_signatories : 0..1 to 1
+    funding_applications_legal_sigs ..> legal_signatories : 1 to 1
 
     spend ..> funding_applications_spend : 1 to 1
     spend ..> cost_types : 0..* to 1
@@ -73,7 +72,8 @@ classDiagram
       project_reference_numfber: String
       salesforce_case_id: String
       salesforce_case_number: String
-      submitted_on: String
+      submitted_on: Timestamp
+      agreement_submitted_on: Timestamp
       organisation: UUID **FK**
       created_at: Timestamp
       updated_at: Timestamp
@@ -403,6 +403,8 @@ classDiagram
       email_address: String
       phone_number: String
       organisation_id: UUID **FK**
+      role: String
+      salesforce_legal_signatory_id: String
       created_at: Timestamp
       updated_at: Timestamp
     }
