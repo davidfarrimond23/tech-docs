@@ -14,12 +14,16 @@ classDiagram
 
     funding_applications_pay_reqs ..> funding_applications : 0..* to 1
     funding_applications_pay_reqs ..> payment_requests : 1 to 1
-    arrears_journey_tracker ..> payment_requests : 1 to 1
-    arrears_journey_tracker ..> progress_updates : 1 to 1
+    arrears_journey_trackers ..> payment_requests : 1 to 0..1
+    arrears_journey_trackers ..> progress_updates : 1 to 0..1
+    arrears_journey_trackers ..> funding_application : 0..* to 1
+    completed_arrears_journeys ..> payment_requests : 1 to 0..1
+    completed_arrears_journeys ..> progress_updates : 1 to 0..1
+    completed_arrears_journeys ..> funding_application : 0..* to 1
     payment_requests_spends ..> payment_requests : 0..* to 1
     payment_requests_spends ..> spends : 1 to 1
-    funding_applications_prgrss_updts ..> funding_applications : 0..* to 1
-    funding_applications_prgrss_updts ..> progress_updates : 1 to 1
+    fndng_applctns_prgrss_updts ..> funding_applications : 0..* to 1
+    fndng_applctns_prgrss_updts ..> progress_updates : 1 to 1
     prgrss_updts_photos ..> progress_updates : 0..* to 1
     prgrss_updts_events ..> progress_updates : 0..* to 1
     prgrss_updts_new_staff ..> progress_updates : 0..* to 1
@@ -46,11 +50,24 @@ classDiagram
     funding_application_id and payment_request_id updated
     when moving past 'what do you want to do' %>
 
-    class arrears_journey_tracker {
+    class arrears_journey_trackers {
       id:                       UUID **PK**
       funding_application_id:   UUID **FK**
       payment_request_id:       UUID **FK**
       progress_update_id:       UUID **FK**
+      created_at                Timestamp
+      updated_at                Timestamp
+    }
+
+    class completed_arrears_journeys {
+      id:                       UUID **PK**
+      funding_application_id:   UUID **FK**
+      payment_request_id:       UUID **FK**
+      progress_update_id:       UUID **FK**
+      submitted_on:             Timestamp
+      created_at                Timestamp
+      updated_at                Timestamp
+      salesforce_form_id        String
     }
 
     <%# exists %>
@@ -78,19 +95,17 @@ classDiagram
 
     class progress_updates {
       id:                       UUID **PK**
-      funding_application_id:   UUID **FK**
       submitted_on              Timestamp 
       created_at                Timestamp
       updated_at                Timestamp
     }
 
-    class funding_applications_prgrss_updts {
+    class fndng_applctns_prgrss_updts {
       id:                       UUID **PK**
       funding_application_id:   UUID **FK**
       progress_update_id:       UUID **FK**
       created_at                Timestamp
       updated_at                Timestamp
-    }
 
     class prgrss_updts_photos {
       id                        UUID **PK**
