@@ -41,7 +41,6 @@ classDiagram
     prgrss_updts_csh_cntrbtns ..> progress_updates : 0..* to 1
     prgrss_updts_volunteers ..> progress_updates : 0..* to 1
     prgrss_updts_nn_csh_cntrbtns ..> progress_updates : 0..* to 1
-
     prgrss_updts_apprvd_prpss ..> progress_updates : 0..* to 1
     prgrss_updts_demographics ..> progress_updates : 0..* to 1
     prgrss_updts_outcomes ..> progress_updates : 0..* to 1
@@ -126,37 +125,37 @@ classDiagram
     }
 
     class fndng_applctns_prgrss_updts {
-      id:                       UUID **PK**
-      funding_application_id:   UUID **FK**
+      id:                                     UUID **PK**
+      funding_application_id:  UUID **FK**
       progress_update_id:       UUID **FK**
-      created_at:                Timestamp
-      updated_at:                Timestamp
+      created_at:                      Timestamp
+      updated_at:                     Timestamp
     }
 
    class prgrss_updts_photos {
-      id:                        UUID **PK**
-      progress_updates:          UUID **FK**
-      created_at:                Timestamp
-      updated_at:                Timestamp
+      id:                                    UUID **PK**
+      progress_update_id:      UUID **FK**
+      created_at:                     Timestamp
+      updated_at:                    Timestamp
     }
 
     class prgrss_updts_events {
-      id:                        UUID **PK**
-      progress_updates:          UUID **FK**
-      created_at:                Timestamp
-      updated_at:                Timestamp
+      id:                                   UUID **PK**
+      progress_update_id:     UUID **FK**
+      created_at:                    Timestamp
+      updated_at:                   Timestamp
     }
 
     class prgrss_updts_new_staff {
       id:                                   UUID **PK**
-      progress_updates:        UUID **FK**
+      progress_update_id:     UUID **FK**
       created_at:                    Timestamp
       updated_at:                   Timestamp
     }
 
     class prgrss_updts_procurement{
       id:                                   UUID **PK**
-      progress_updates:        UUID **FK**
+      progress_update_id:     UUID **FK**
       name:                             String
       description:                    String
       date:                               DateTime
@@ -169,14 +168,14 @@ classDiagram
 
     class prgrss_updts_prcrmnt_evidences {
       id:                                   UUID **PK**
-      progress_updates:        UUID **FK**
+      progress_update_id:     UUID **FK**
       created_at:                    Timestamp
       updated_at:                   Timestamp
     }
 
     class prgrss_updts_addtnl_grnt_cndtns {
       id:                                   UUID **PK**
-      progress_updates:        UUID **FK**
+      progress_update_id:    UUID **FK**
       progress:                       String
       description:                   String
       salesforce_additional_grant_condition_id:      String
@@ -186,7 +185,7 @@ classDiagram
 
     class prgrss_updts_new_expiry_date {  
       id:                               UUID **PK**
-      progress_updates:    UUID **FK**
+      progress_update_id: UUID **FK**
       full_date:                    DateTime
       description:               String
       created_at:                Timestamp
@@ -194,34 +193,34 @@ classDiagram
     }
 
     class prgrss_updts_stttry_prmssns_lcncs {
-      id:                        UUID **PK**
-      progress_updates:          UUID **FK**
-      created_at:                Timestamp
-      updated_at:                Timestamp
+      id:                                   UUID **PK**
+      progress_update_id:     UUID **FK**
+      created_at:                    Timestamp
+      updated_at:                   Timestamp
     }
 
     class prgrss_updts_risks {
-      id:                                 UUID **PK**
-      progress_updates:      UUID **FK**
-      description:                  String
-      likelihood:                     Integer
-      Impact:                         Integer
-      is_risk:                          Boolean
-      is_still_risk_description:    String
-      created_at:                  Timestamp
-      updated_at:                 Timestamp
+      id:                                     UUID **PK**
+      progress_update_id:       UUID **FK**
+      description:                     String
+      likelihood:                        Integer
+      Impact:                             Integer
+      is_risk:                              Boolean
+      is_still_risk_description:  String
+      created_at:                       Timestamp
+      updated_at:                      Timestamp
     }
 
     class prgrss_updts_risk_registers {
       id:                                     UUID **PK**
-      progress_updates:          UUID **FK**
+      progress_update_id:       UUID **FK**
       created_at:                      Timestamp
       updated_at:                     Timestamp
     }
 
     class prgrss_updts_csh_cntrbtns {
-      id:                                                   UUID **PK**
-      progress_updates:                       UUID **FK**
+      id:                                                  UUID **PK**
+      progress_update_id:                    UUID **FK**
       salesforce_project_income_id:   String
       display_text:                                 String
       amount_expected:                       Integer
@@ -236,16 +235,58 @@ classDiagram
 
     class prgrss_updts_volunteers {
       id:                                     UUID **PK**
-      progress_updates:          UUID **FK**
+      progress_update_id:       UUID **FK**
       description:                      String
       hours:                               Integer
       created_at:                      Timestamp
       updated_at:                     Timestamp
     }
 
+    class prgrss_updts_apprvd_prpss {
+      id:                                     UUID **PK**
+      progress_update_id:       UUID **FK**
+      progress:                          String
+      description:                      String
+      salesforce_approved_purpose_id:                      String
+      created_at:                      Timestamp
+      updated_at:                     Timestamp
+    }
+
+     class prgrss_updts_fndg_acknwldgmnts {
+      id:                                     UUID **PK**
+      progress_update_id:       UUID **FK**
+      acknowledgements:        JSONB
+      created_at:                      Timestamp
+      updated_at:                     Timestamp
+    }
+
+    class prgrss_updts_digital_outputs {
+      id:                                     UUID **PK**
+      progress_update_id:       UUID **FK**
+      description:                     description
+      created_at:                      Timestamp
+      updated_at:                     Timestamp
+    }
+
+      class prgrss_updts_demographics {
+      id:                                     UUID **PK**
+      progress_update_id:       UUID **FK**
+      explanation:                     String
+      created_at:                      Timestamp
+      updated_at:                     Timestamp
+    }
+
+    class prgrss_updts_outcomes {
+      id:                                     UUID **PK**
+      progress_update_id:       UUID **FK**
+      progress_updates:          JSONB
+      created_at:                      Timestamp
+      updated_at:                     Timestamp
+    }
+
     class prgrss_updts_nn_csh_cntrbtns {
       id:                                     UUID **PK**
-      progress_updates:          UUID **FK**
+      progress_update_id:       UUID **FK**
       description:                      String
       value:                                Integer
       created_at:                      Timestamp
