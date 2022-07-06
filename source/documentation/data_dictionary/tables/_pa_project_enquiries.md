@@ -3,8 +3,8 @@
 Table that stores the answers that an applicant gives for a project enquiry form (PEF).
 
 ```
-  id: UUID **PK**
-  pre_application_id: UUID **FK**
+  id: UUID <<PK>>
+  pre_application_id: UUID <<FK>>
   previous_contact_name: text
   heritage_focus: text
   what_project_does: text
