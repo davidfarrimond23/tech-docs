@@ -1,6 +1,10 @@
 ## low_spend
 
-Low spend descition
+Contains infomation relating to low spend data.
+
+A single payment request can have *many* low_spends.
+
+A low_spend can **only** be linked to one payment_request
 
 ```
   id: UUID <<PK>>

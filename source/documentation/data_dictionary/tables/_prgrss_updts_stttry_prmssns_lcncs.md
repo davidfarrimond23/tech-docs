@@ -1,6 +1,6 @@
-## prgrss_updts_events
+## prgrss_updts_stttry_prmssns_lcncs
 
-Storage object to attach events files against.  
+Storage object to attach statatory permissions files against.  
 
 ```
   id: UUID **PK**

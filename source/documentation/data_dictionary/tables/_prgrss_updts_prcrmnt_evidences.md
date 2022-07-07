@@ -1,6 +1,6 @@
-## prgrss_updts_events
+## prgrss_updts_prcrmnt_evidences
 
-Description 
+Storage object to attach procurement evidence files against.  
 
 ```
   id: UUID **PK**

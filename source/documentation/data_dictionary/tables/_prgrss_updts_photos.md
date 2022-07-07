@@ -1,6 +1,6 @@
 ## prgrss_updts_photos
 
-Description 
+Storage object to attach photo evidence files against.  
 
 ```
   id: UUID **PK**

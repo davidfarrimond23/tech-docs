@@ -1,6 +1,10 @@
 ## prgrss_updts_apprvd_prpss
 
-Description 
+Contains infomation relating to additional grant condition data.
+
+A single progress_update can have *many* prgrss_updts_apprvd_prpss.
+
+A prgrss_updts_apprvd_prps can **only** be linked to one progress_update
 
 ```
   id: UUID **PK**

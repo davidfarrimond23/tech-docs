@@ -1,6 +1,6 @@
 ## prgrss_updts_risk_registers
 
-Description 
+Storage object to attach risk register files against.  
 
 ```
   id: UUID **PK**
