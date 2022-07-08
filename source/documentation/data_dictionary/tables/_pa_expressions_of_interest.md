@@ -3,8 +3,8 @@
 Table that stores the answers that an applicant gives for an expression of interest (EOI).
 
 ```
-  id: UUID **PK**
-  pre_application_id: UUID **FK**
+  id: UUID <<PK>>
+  pre_application_id: UUID <<FK>>
   heritage_focus: text
   what_project_does: text
   project_outcomes: text

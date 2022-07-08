@@ -6,9 +6,9 @@ Contains metadata data about pre_applications - which are:
 - Expressions of interest (EOI)
 
 ```
-  id: UUID **PK**
-  user_id: integer **FK** 
-  organisation_id: UUID **FK**
+  id: UUID <<PK>>
+  user_id: integer <<FK>> 
+  organisation_id: UUID <<FK>>
   project_reference_number: text
   salesforce_case_id: text
   salesforce_case_number: text

@@ -9,7 +9,7 @@ Values are:
 * Not sure
 
 ```
-id: Integer **PK**
+id: Integer <<PK>>
 name: String
 created_at: Timestamp
 updated_at: Timestamp

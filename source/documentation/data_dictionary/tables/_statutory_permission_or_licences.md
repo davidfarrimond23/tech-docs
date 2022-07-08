@@ -7,9 +7,9 @@ Has a FK, and therefore dependency on, sfx_pts_payments.
 
 
 ```
-  id: UUID **PK**
+  id: UUID <<PK>>
   details_json: jsonb               Stores detail as JSON.
-  sfx_pts_payment_id: UUID **FK**
+  sfx_pts_payment_id: UUID <<FK>>
   created_at: Timestamp
   updated_at: Timestamp
 ```

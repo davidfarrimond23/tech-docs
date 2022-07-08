@@ -9,7 +9,7 @@ Lookup table for four types of "Secured" for cash contributions.
 
 
 ```
-id: Integer **PK**
+id: Integer <<PK>>
 name: String
 created_at: Timestamp
 updated_at: Timestamp

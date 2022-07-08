@@ -5,8 +5,6 @@ weight: 2
 
 # Arrears payments data model
 
-This is a work in progress
-
 <%= partial 'partials/mermaid' %>
 
 <div class="mermaid">
@@ -14,31 +12,39 @@ classDiagram
 
     funding_applications_pay_reqs ..> funding_applications : 0..* to 1
     funding_applications_pay_reqs ..> payment_requests : 1 to 1
-    arrears_journey_tracker ..> payment_requests : 1 to 1
-    arrears_journey_tracker ..> progress_updates : 1 to 1
-    payment_requests_spends ..> payment_requests : 0..* to 1
-    payment_requests_spends ..> spends : 1 to 1
-    funding_applications_prgrss_updts ..> funding_applications : 0..* to 1
-    funding_applications_prgrss_updts ..> progress_updates : 1 to 1
+    arrears_journey_trackers ..> payment_requests : 1 to 0..1
+    arrears_journey_trackers ..> progress_updates : 1 to 0..1
+    arrears_journey_trackers ..> funding_applications : 0..* to 1
+    completed_arrears_journeys ..> payment_requests : 1 to 0..1
+    completed_arrears_journeys ..> progress_updates : 1 to 0..1
+    completed_arrears_journeys ..> funding_applications : 0..* to 1
+    payment_requests ..> high_spends : 1 to 0..*
+    payment_requests ..> low_spends : 1 to 0..*
+    fndng_applctns_prgrss_updts ..> funding_applications : 0..* to 1
+    fndng_applctns_prgrss_updts ..> progress_updates : 1 to 1
     prgrss_updts_photos ..> progress_updates : 0..* to 1
     prgrss_updts_events ..> progress_updates : 0..* to 1
     prgrss_updts_new_staff ..> progress_updates : 0..* to 1
     <%# For procurements > £10000.
     When uploading a report instead - one procurement object with attachment %>
-    prgrss_updts_procurement ..> progress_updates : 0..* to 1
+    prgrss_updts_procurements ..> progress_updates : 0..* to 1
+    prgrss_updts_prcrmnt_evidences ..> progress_updates : 0..* to 1
     prgrss_updts_addtnl_grnt_cndtns ..> progress_updates : 0..* to 1
     <%# new object to recird reason for extension %>
     prgrss_updts_new_expiry_date ..> progress_updates : 0..1 to 1
     prgrss_updts_stttry_prmssns_lcncs ..> progress_updates : 0..* to 1
     <%# When uploading a report instead - one risk object with attachment %>
-    prgrss_updts_risks ..> progress_updates : 0..* to 1
+    prgrss_updts_risks ..> progress_updates : 0..* to 1..*
+    prgrss_updts_risk_registers ..> progress_updates : 0..* to 1
     prgrss_updts_csh_cntrbtns ..> progress_updates : 0..* to 1
     prgrss_updts_volunteers ..> progress_updates : 0..* to 1
     prgrss_updts_nn_csh_cntrbtns ..> progress_updates : 0..* to 1
+    prgrss_updts_apprvd_prpss ..> progress_updates : 0..* to 1
+    prgrss_updts_demographics ..> progress_updates : 0..* to 1
+    prgrss_updts_outcomes ..> progress_updates : 0..* to 1
+    prgrss_updts_digital_outputs ..> progress_updates : 0..* to 1
+    prgrss_updts_fndg_acknwldgmnts ..> progress_updates : 0..* to 1
     
-
-
-
 
 
     <%# deleted when journeys submitted_on
@@ -46,155 +52,243 @@ classDiagram
     funding_application_id and payment_request_id updated
     when moving past 'what do you want to do' %>
 
-    class arrears_journey_tracker {
+    class arrears_journey_trackers {
       id:                       UUID **PK**
       funding_application_id:   UUID **FK**
       payment_request_id:       UUID **FK**
       progress_update_id:       UUID **FK**
+      created_at:                Timestamp
+      updated_at:                Timestamp
     }
 
-    <%# exists %>
+    class completed_arrears_journeys {
+      id:                       UUID **PK**
+      funding_application_id:   UUID **FK**
+      payment_request_id:       UUID **FK**
+      progress_update_id:       UUID **FK**
+      submitted_on:             Timestamp
+      created_at:                Timestamp
+      updated_at:                Timestamp
+      salesforce_form_id:        String
+    }
+
     class payment_requests {
+      id:                       UUID **PK**
+      amount_requested:   Integer
+      amount_requested:       JSONB
+      answers_json:               JSONB
+      created_at:                Timestamp
+      updated_at:                Timestamp
+      submitted_on:                Timestamp
     }
 
-    <%# exists %>
-    class payment_requests_spends{
-
+    class high_spends {
+      id:                                   UUID **PK**
+      payment_request_id:   UUID **FK**
+      cost_heading:               Sting
+      description:                   String
+      vat_amount:                  Integer
+      amount:                         Integer
+      date_of_spend:            Timestamp
+      spend_threshold:         Integer
+      created_at:                   Timestamp
+      updated_at:                  Timestamp
     }
 
-    <%# exists %>
-    class spends {
-
+    class low_spends {
+      id:                                 UUID **PK**
+      payment_request_id:  UUID **FK**
+      cost_heading:              Sting
+      vat_amount:                 Integer
+      total_amount:               Integer
+      spend_threshold:         Integer
+      created_at:                   Timestamp
+      updated_at:                  Timestamp
     }
 
-    <%# exists %>
     class funding_applications_pay_reqs {
       id:                       UUID **PK**
       funding_application_id:   UUID **FK**
       payment_request_id:       UUID **FK**
-      created_at                Timestamp
-      updated_at                Timestamp
+      created_at:                Timestamp
+      updated_at:                Timestamp
     }
 
     class progress_updates {
-      id:                       UUID **PK**
-      funding_application_id:   UUID **FK**
-      submitted_on              Timestamp 
-      created_at                Timestamp
-      updated_at                Timestamp
+      id:                               UUID **PK**
+      submitted_on:           Timestamp
+      answers_json:           JSONB 
+      created_at:                Timestamp
+      updated_at:               Timestamp
     }
 
-    class funding_applications_prgrss_updts {
-      id:                       UUID **PK**
-      funding_application_id:   UUID **FK**
+    class fndng_applctns_prgrss_updts {
+      id:                                     UUID **PK**
+      funding_application_id:  UUID **FK**
       progress_update_id:       UUID **FK**
-      created_at                Timestamp
-      updated_at                Timestamp
+      created_at:                      Timestamp
+      updated_at:                     Timestamp
     }
 
-    class prgrss_updts_photos {
-      id                        UUID **PK**
-      progress_updates          UUID **FK**
-      created_at                Timestamp
-      updated_at                Timestamp
+   class prgrss_updts_photos {
+      id:                                    UUID **PK**
+      progress_update_id:      UUID **FK**
+      created_at:                     Timestamp
+      updated_at:                    Timestamp
     }
 
     class prgrss_updts_events {
-      id                        UUID **PK**
-      progress_updates          UUID **FK**
-      created_at                Timestamp
-      updated_at                Timestamp
+      id:                                   UUID **PK**
+      progress_update_id:     UUID **FK**
+      created_at:                    Timestamp
+      updated_at:                   Timestamp
     }
 
     class prgrss_updts_new_staff {
-      id                        UUID **PK**
-      progress_updates          UUID **FK**
-      created_at                Timestamp
-      updated_at                Timestamp
+      id:                                   UUID **PK**
+      progress_update_id:     UUID **FK**
+      created_at:                    Timestamp
+      updated_at:                   Timestamp
     }
 
-    class prgrss_updts_procurement{
-      id                        UUID **PK**
-      progress_updates          UUID **FK**
-      name                      String
-      descriptipn               String
-      date                      DateTime
-      amount                    Integer
-      lowest_tender             Boolean
-      supplier_justification    String
-      created_at                Timestamp
-      updated_at                Timestamp
+    class prgrss_updts_procurements{
+      id:                                   UUID **PK**
+      progress_update_id:     UUID **FK**
+      name:                             String
+      description:                    String
+      date:                               DateTime
+      amount:                          Integer
+      lowest_tender:               Boolean
+      supplier_justification:    String
+      created_at:                     Timestamp
+      updated_at:                    Timestamp
+    }
+
+    class prgrss_updts_prcrmnt_evidences {
+      id:                                   UUID **PK**
+      progress_update_id:     UUID **FK**
+      created_at:                    Timestamp
+      updated_at:                   Timestamp
     }
 
     class prgrss_updts_addtnl_grnt_cndtns {
-      id                        UUID **PK**
-      progress_updates          UUID **FK**
-      progress                  String
-      created_at                Timestamp
-      updated_at                Timestamp
+      id:                                   UUID **PK**
+      progress_update_id:    UUID **FK**
+      progress:                       String
+      description:                   String
+      salesforce_additional_grant_condition_id:      String
+      created_at:                    Timestamp
+      updated_at:                   Timestamp
     }
 
     class prgrss_updts_new_expiry_date {  
-      id                        UUID **PK**
-      progress_updates          UUID **FK**
-      date                      DateTime
-      description               String
-      created_at                Timestamp
-      updated_at                Timestamp
+      id:                               UUID **PK**
+      progress_update_id: UUID **FK**
+      full_date:                    DateTime
+      description:               String
+      created_at:                Timestamp
+      updated_at:               Timestamp
     }
 
     class prgrss_updts_stttry_prmssns_lcncs {
-      id                        UUID **PK**
-      progress_updates          UUID **FK**
-      created_at                Timestamp
-      updated_at                Timestamp
+      id:                                   UUID **PK**
+      progress_update_id:     UUID **FK**
+      created_at:                    Timestamp
+      updated_at:                   Timestamp
     }
 
     class prgrss_updts_risks {
-      id                        UUID **PK**
-      progress_updates          UUID **FK**
-      identify_risks            String
-      likelihood                Integer
-      Impact                    Integer
-      is_risk                   Boolean
-      mitigation_description    String
-      created_at                Timestamp
-      updated_at                Timestamp
+      id:                                     UUID **PK**
+      progress_update_id:       UUID **FK**
+      description:                     String
+      likelihood:                        Integer
+      Impact:                             Integer
+      is_risk:                              Boolean
+      is_still_risk_description:  String
+      created_at:                       Timestamp
+      updated_at:                      Timestamp
+    }
+
+    class prgrss_updts_risk_registers {
+      id:                                     UUID **PK**
+      progress_update_id:       UUID **FK**
+      created_at:                      Timestamp
+      updated_at:                     Timestamp
     }
 
     class prgrss_updts_csh_cntrbtns {
-      id                        UUID **PK**
-      progress_updates          UUID **FK**
-      received_expected         Boolean
-      amount_so_far             Integer
-      will_receive_total_amount Boolean
-      date_receive_total_amount Boolean
-      reason_not_total_amount   String
-      created_at                Timestamp
-      updated_at                Timestamp
+      id:                                                  UUID **PK**
+      progress_update_id:                    UUID **FK**
+      salesforce_project_income_id:   String
+      display_text:                                 String
+      amount_expected:                       Integer
+      amount_received_so_far:            Integer
+      received_amount_expected:       Boolean
+      will_receive_total_amount:          Boolean
+      received_amount_expected:       Boolean
+      reason_amount_expected_not_received:          String
+      created_at:                                   Timestamp
+      updated_at:                                  Timestamp
     }
 
     class prgrss_updts_volunteers {
-      id                        UUID **PK**
-      progress_updates          UUID **FK**
-      task_description          String
-      hours                     Integer
-      is_professional           Boolean
-      is_skilled                Boolean
-      is_volunteer              Boolean
-      is_secured_ncc            Boolean
-      created_at                Timestamp
-      updated_at                Timestamp
+      id:                                     UUID **PK**
+      progress_update_id:       UUID **FK**
+      description:                      String
+      hours:                               Integer
+      created_at:                      Timestamp
+      updated_at:                     Timestamp
+    }
+
+    class prgrss_updts_apprvd_prpss {
+      id:                                     UUID **PK**
+      progress_update_id:       UUID **FK**
+      progress:                          String
+      description:                      String
+      salesforce_approved_purpose_id:                      String
+      created_at:                      Timestamp
+      updated_at:                     Timestamp
+    }
+
+     class prgrss_updts_fndg_acknwldgmnts {
+      id:                                     UUID **PK**
+      progress_update_id:       UUID **FK**
+      acknowledgements:        JSONB
+      created_at:                      Timestamp
+      updated_at:                     Timestamp
+    }
+
+    class prgrss_updts_digital_outputs {
+      id:                                     UUID **PK**
+      progress_update_id:       UUID **FK**
+      description:                     description
+      created_at:                      Timestamp
+      updated_at:                     Timestamp
+    }
+
+      class prgrss_updts_demographics {
+      id:                                     UUID **PK**
+      progress_update_id:       UUID **FK**
+      explanation:                     String
+      created_at:                      Timestamp
+      updated_at:                     Timestamp
+    }
+
+    class prgrss_updts_outcomes {
+      id:                                     UUID **PK**
+      progress_update_id:       UUID **FK**
+      progress_updates:          JSONB
+      created_at:                      Timestamp
+      updated_at:                     Timestamp
     }
 
     class prgrss_updts_nn_csh_cntrbtns {
-      id                        UUID **PK**
-      progress_updates          UUID **FK**
-      description               String
-      value_secured             Integer
-      reason_not_total_amount   String
-      created_at                Timestamp
-      updated_at                Timestamp
-    }
+      id:                                     UUID **PK**
+      progress_update_id:       UUID **FK**
+      description:                      String
+      value:                                Integer
+      created_at:                      Timestamp
+      updated_at:                     Timestamp
+    } 
 
 </div>
