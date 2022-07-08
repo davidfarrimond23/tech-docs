@@ -1,6 +1,6 @@
 ## low_spend
 
-Contains infomation relating to low spend data.
+Contains information relating to low spend data.
 
 A single payment request can have *many* low_spends.
 

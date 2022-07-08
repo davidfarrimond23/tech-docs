@@ -1,6 +1,6 @@
 ## prgrss_updts_stttry_prmssns_lcncs
 
-Storage object to attach statatory permissions files against.  
+Storage object to attach statutory permissions files against.  
 
 ```
   id: UUID **PK**

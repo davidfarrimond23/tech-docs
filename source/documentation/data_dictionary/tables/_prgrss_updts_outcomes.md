@@ -1,8 +1,8 @@
 ## prgrss_updts_outcomes
 
-Contains infomation relating to additional grant condition data.
+Contains information relating to additional grant condition data.
 
-Outcomes are stored as JSON, as each achnowledgment is pulled dynamically from Salesforce as a key, with the users answers stored as the value. 
+Outcomes are stored as JSON, as each outcome is pulled dynamically from Salesforce as a key, with the user's answers stored as the value. 
 
 A single progress_update can have *many* prgrss_updts_outcomes.
 

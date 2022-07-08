@@ -1,6 +1,6 @@
 ## fndng_applctns_prgrss_updts
 
-Captures the link between funding applications andprogress_updates.
+Captures the link between funding applications and progress_updates.
 
 A single funding application can have *many* progress_updates.
 

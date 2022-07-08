@@ -1,6 +1,6 @@
 ## high_spend
 
-Contains infomation relating to high spend data.
+Contains information relating to high spend data.
 
 A single payment request can have *many* high_spends.
 

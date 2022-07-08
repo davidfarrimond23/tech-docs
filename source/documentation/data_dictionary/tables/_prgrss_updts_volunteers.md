@@ -1,6 +1,6 @@
 ## prgrss_updts_volunteers
 
-Contains infomation relating to additional grant condition data.
+Contains infomation relating to volunteer data.
 
 A single progress_update can have *many* prgrss_updts_volunteers.
 

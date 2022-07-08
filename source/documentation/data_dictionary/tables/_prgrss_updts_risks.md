@@ -1,6 +1,6 @@
 ## prgrss_updts_risks
 
-Contains infomation relating to additional grant condition data.
+Contains information relating to additional grant condition data.
 
 A single progress_update can have *many* prgrss_updts_risks.
 

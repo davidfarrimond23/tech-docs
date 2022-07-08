@@ -1,8 +1,8 @@
 ## progress_updates
 
-Contains information relating to a progress updates journey, storing selected asnswers as JSON Key/Values.
+Contains information relating to a progress updates journey, storing selected answers as JSON Key/Values.
 
-This entitiy relates all the answers objects to the current arrears_journey_tracker or (upon completion) the completed_arrears_journey.
+This entity relates all the answers objects to the current arrears_journey_tracker or (upon completion) the completed_arrears_journey.
 
 ```
   id: UUID <<PK>>

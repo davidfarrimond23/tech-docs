@@ -1,8 +1,8 @@
 ## prgrss_updts_fndg_acknwldgmnts
 
-Contains infomation relating to additional grant condition data.
+Contains information relating to additional grant condition data.
 
-Funding Acknowledgments are stored as JSON, as each achnowledgment is pulled dynamically from Salesforce as a key, with the users answers stored as the value. 
+Funding Acknowledgments are stored as JSON, as each acknowledgement is pulled dynamically from Salesforce as a key, with the user's answers stored as the value. 
 
 A single progress_update can have *many* prgrss_updts_fndg_acknwldgmnts.
 

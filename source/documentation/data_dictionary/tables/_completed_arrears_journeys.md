@@ -1,6 +1,6 @@
 ## completed_arrears_journeys
 
-Used by medium arrears journey and created when a user completes the payment in arrears journey. This is used to store to store and linke completed data object related to a users previouse arrears journies - relating the completed progress_update and/or payment_request entities to the funding_application. 
+Used by medium arrears journey and created when a user completes the payment in arrears journey. This is used to store and link completed data objects related to a user's previous arrears journies - relating the completed progress_update and/or payment_request entities to the funding_application. 
 
 *Many* completed_arrears_journeys can exist agast one funding_application. 
 

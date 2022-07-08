@@ -20,7 +20,7 @@ and the project title shows as a link that can be clicked on to start the journe
 
 Upon entering the start page of the arrears journey an `arrears_journey_tracker` entity is created to track the progress of the user. The user will be asked to select their journey type: whether they would like to give a progress update, a payment request, or both. Upon making their selection, the respective `progress_update` and `payment_request` entities are instantiated and linked to the journey_tacker. 
 
-Note: If the user enters the arrears journey and they already have an `arrears_journey_tracker` linked to their funding application, this indicates that the user is returning to continue work on the application. As such, the user is not presented with the journey selection page again but is instead directed straight to the task page. 
+Note: If the user enters the arrears journey and they already have an `arrears_journey_tracker` linked to their funding application, this indicates that the user is returning to continue work on the application. As such, the user is not presented with the journey selection page again, but instead, directed straight to the task page. 
 
 After the user selects their journey, they are presented with a dynamic task page. This task page contains a list of hyperlinks with a status indicator. 
 
@@ -46,7 +46,7 @@ If the user has chosen to give a progress update then they will have to proceed 
 
 When progressing through this portion of the journey, the user is asked to upload several files and details regarding their project's status. This data is stored through a series of data entities, all of which relate to the  `progress_update` parent. The majority of these entities are created to allow rails to attach active_storage_blobs against user file uploads - with a few storing progress_update specific data, such as volunteer or identified risk objects. 
 
-A complete breakdown of the progress update objects can be seen in the Data Dictionary. 
+Note: A complete breakdown of the progress update objects can be seen in the Data Dictionary. 
 
 When the journey is completed, the user is presented with a 'Check your answers' page in which they can go back and edit any of the information they have given. (Edited polar questions are not cleared from the database until submission, allowing the user to revert a change).
 
@@ -58,7 +58,7 @@ Similarly to the previous journey section, there is a 'Check your answers' at th
 
 ### Get a payment 
 
-If the user has chosen to give a payment request then they will have to proceed 'Tell us what you have spent' and 'Bank details' sections of the journey. 
+If the user has chosen to give a payment request, then they will have to proceed with the 'Tell us what you have spent' and 'Bank details' sections of the journey. 
 
 #### Tell us what you have spent
 
@@ -66,7 +66,7 @@ When adding spend details through this task, the user is first asked if they wan
 
 When adding high spends the user can select the cost type to add details against. This creates a `high_spend` entity for each new addition, relating to the `payment_request` parent. The user can loop through this addition process many times until they have added all of their spendings. 
 
-When adding low spends, the users are presented with a dynamic picklist generated from the pre-determined application spend types stored in Salesforce. Each selection is added to the JSON task list, and on the following pages the user is asked to detail these spends. Creating `low_spend` entities that again relate to the parent `payment_request`. When details have been provided for each of the selected spends, they are removed from the task list. 
+When adding low spends, the user is presented with a dynamic picklist generated from the pre-determined application spend types stored in Salesforce. Each selection is added to the JSON task list, and on the following pages the user is asked to detail these spends. Creating `low_spend` entities that again relate to the parent `payment_request`. When details have been provided for each of the selected spends, they are removed from the task list. 
 
 The user can review/edit all of the spend details provided in the summary at the end of each spend journey. 
 
@@ -82,14 +82,22 @@ When adding bank details the user is asked to add the credentials, alongside evi
 
 As stated above, once the user has completed all of the required tasks within the task list they will be able to submit. 
 
-Upon submission any unused data, left around from edits, is first stripped and normalised and then uploaded against the funding application in Salesforce. 
+Upon submission, any unused data left around from edits is first stripped, normalised and then uploaded against the funding application in Salesforce. 
 
-This is uploaded to a from against the Application, the form being one of three recordTypes: `progress_update`, `payment_request` or `progress_update_and_payment_request`. With the captured data being uploaded to the respective salesforce field. 
+The upload is triggered from the Task page controller and calls a method on `progress_and_spend_helper.rb`, which orchestrates the submission process. The helper in turn calls the respective Salesforce APIs (`ProgressUpdateSalseforceApi`, `PaymentRequestSalesforceAPI`, `SalesforceApi` for bank detail uploads) - upserting the user data based upon the journey type and information provided. 
 
-When uploading bank details, if there are no updates to upload, then the existing bank details are attached to the payment request. 
+This is uploaded to a from against the Application, the form being one of three record types: `progress_update`, `payment_request` or `progress_update_and_payment_request`. With the captured data uploaded to the respective salesforce field. 
 
-If, however, new bank details are uploaded, then they are first checked against any existing bank detail's sort code and account number. If they are matched to an existing bank account object that has been verified then a new record **is not** created, and the matched existing account is again assigned to the uploaded payment request.
+When uploading bank details, if there are no updates to upload, then the existing bank details in Salesforce are attached to the payment request. 
 
-In the scenario where the user submitted bank details do not match an existing record, or it matches an existing record, but the match has not been verified or is voided. Then a new record is created and attached to the payment request. 
+If, however, new bank details are uploaded, they are checked against any existing bank detail's sort code and account number. If they are matched to an existing bank account object that has been verified, then a new record **is not** created, and the matched existing account is again assigned to the uploaded payment request.
 
-Finally, after submission to Salesforce, the user is presented with a submission successful page which displays dynamic content based on the journey type submitted. 
+In the scenario where the user submitted bank details do not match an existing record, or it matches an existing record, but the match has not been verified, or is voided, then a new record is created and attached to the payment request. 
+
+Finally, after the submission to Salesforce, the user is presented with a successful submission page which displays dynamic content based on the journey type submitted. 
+
+If the user has chosen to not provide any information in regards to their journey selection tasks, then they are presented with content that informs them they have nothing to submit and should attempt the journey again. 
+
+Note: in this scenario, an empty object may be created against the Salesforce project, but no data is ever uploaded. 
+
+Finally, the `arrears_journey_tracker` is deleted, with any related `progress_update` or `payment_request` entities being moved over to a new `completed_arrears_journey` entry against the `funding_application`. Allowing the user to view all the data they have entered against previous arrears journeys. 
