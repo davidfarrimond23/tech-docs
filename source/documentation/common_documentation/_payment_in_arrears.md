@@ -8,13 +8,33 @@ The payment in arrears journey is what an applicant uses to:
 
 ### Criteria for starting the journey - from the dashboard
 
+Funding applications now have a status and award type enumerator that is set through the funding application context and also when the large PTS legal agreements are submitted. 
+
+This locks the application into a specific award type that can then be later referenced. This safeguards applications against changing journey paths if there is a grant amount increase/decrease during sensitive legal agreement and payment journeys. 
+
 Funding Frontend checks that:
 
-- If the application is between 100k-200k (Medium 2),
+#### Medium:
+
+- If the application is between 100k-200k (Medium 2) award type,
 - and the legal agreement for the application is in place
 
 If these criteria are met then the project appears in the awarded section of the dashboard in Funding Frontend
 and the project title shows as a link that can be clicked on to start the journey.
+
+#### Large:
+
+- The application is either a large delivery or large development award type,
+- permission to start has been submitted. 
+- and the legal agreement for the given application is in-place in Salesforce (the PTS form is at the completed stage)
+
+If these criteria are met then the project title link will become active under the respective delivery/development awarded section of Funding Frontend and can now be clicked on to start the journey.
+
+**NOTE: For large applications the journey selector is skipped and the user can only submit a payment request**
+
+In order for a large application to progress through the arrears journey, a funding application entity must be created. This entity is created from the arrears start controller, when the above criteria is met. A payment request entity is also then created and attached to the funding application and the user is redirected straight into the arrears task page (with only payment tasks to complete). 
+
+The funding application is populated with the minimum required data to progress, including: a salesforce case ID, project reference, submitted on date, status and award type. 
 
 ### Journey selection and task page 
 
