@@ -8,7 +8,7 @@ The payment in arrears journey is what an applicant uses to:
 
 ### Criteria for starting the journey - from the dashboard
 
-Funding applications now have a status and award type enumerator that is set through the funding application context and also when the large PTS legal agreements are submitted. 
+Funding applications now have a status and award type enumerator that is set through the `FundingApplicationContext`, as well as, when the large PTS legal agreements are submitted. 
 
 This locks the application into a specific award type that can then be later referenced. This safeguards applications against changing journey paths if there is a grant amount increase/decrease during sensitive legal agreement and payment journeys. 
 
@@ -36,7 +36,7 @@ In order for a large application to progress through the arrears journey, a fund
 
 The funding application is populated with the minimum required data to progress, including: a salesforce case ID, project reference, submitted on date, status and award type. 
 
-### Journey selection and task page 
+### Journey selection and task page [MEDIUM ONLY]
 
 Upon entering the start page of the arrears journey an `arrears_journey_tracker` entity is created to track the progress of the user. The user will be asked to select their journey type: whether they would like to give a progress update, a payment request, or both. Upon making their selection, the respective `progress_update` and `payment_request` entities are instantiated and linked to the journey_tacker. 
 
