@@ -23,7 +23,7 @@ the Permission to Start process can begin in Funding Frontend
 - Permission to start process ends in Funding frontend
 - Processing of the application, including payment, continues in Salesforce.
 
-At the time of writing, Large payments are manual,
+
 
 
 
