@@ -8,12 +8,6 @@ The payment in arrears journey is what an applicant uses to:
 
 ### Criteria for starting the journey - from the dashboard
 
-Funding applications now has a `status` enumerator stored, which is checked by the context to ensure that only application with a status of `payment_can_start` can enter a payment route. This status ise set by the `task_controller` when a funding application has completed all legal agreement journeys. 
-
- An `award type` enumerator is also present that is set through the `FundingApplicationContext` and `LegalAgreementsContext` when a valid application is found, or, at the start and end of all application legal agreement journeys - ensuring all application types are set and locked in, regardless of app type specific flows. 
-
-This award type lock and status fix the application into the specific journey flow intended for the application type. This safeguards applications against changing journey flows if there is a grant amount increase/decrease during sensitive legal agreement and payment journeys. 
-
 Funding Frontend checks that:
 
 #### Medium:
