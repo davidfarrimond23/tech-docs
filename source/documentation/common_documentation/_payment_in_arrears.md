@@ -8,22 +8,25 @@ The payment in arrears journey is what an applicant uses to:
 
 ### Criteria for starting the journey - from the dashboard
 
-Funding applications now have a status and award type enumerator that is set through the `FundingApplicationContext`, as well as, when the large PTS legal agreements are submitted. 
+Funding applications now has a `status` enumerator stored, which is checked by the context to ensure that only application with a status of `payment_can_start` can enter a payment route. This status ise set by the `task_controller` when a funding application has completed all legal agreement journeys. 
 
-This locks the application into a specific award type that can then be later referenced. This safeguards applications against changing journey paths if there is a grant amount increase/decrease during sensitive legal agreement and payment journeys. 
+ An `award type` enumerator is also present that is set through the `FundingApplicationContext` and `LegalAgreementsContext` when a valid application is found, or, at the start and end of all application legal agreement journeys - ensuring all application types are set and locked in, regardless of app type specific flows. 
+
+This award type lock and status fix the application into the specific journey flow intended for the application type. This safeguards applications against changing journey flows if there is a grant amount increase/decrease during sensitive legal agreement and payment journeys. 
 
 Funding Frontend checks that:
 
 #### Medium:
 
 - If the application is between 100k-200k (Medium 2) award type,
-- and the legal agreement for the application is in place
+- and the legal agreement for the application is in place in SF, as marked by the `Legal_agreement_in_place__c` checkbox.
 
 If these criteria are met then the project appears in the awarded section of the dashboard in Funding Frontend
 and the project title shows as a link that can be clicked on to start the journey.
 
 #### Large:
 
+- The FFE account email matches that used by the Salesforce User and Contact against the application. 
 - The application is either a large delivery or large development award type,
 - permission to start has been submitted. 
 - and the legal agreement for the given application is in-place in Salesforce (the PTS form is at the completed stage)
@@ -32,9 +35,13 @@ If these criteria are met then the project title link will become active under t
 
 **NOTE: For large applications the journey selector is skipped and the user can only submit a payment request**
 
-In order for a large application to progress through the arrears journey, a funding application entity must be created. This entity is created from the arrears start controller, when the above criteria is met. A payment request entity is also then created and attached to the funding application and the user is redirected straight into the arrears task page (with only payment tasks to complete). 
+In order for a large application to progress through the arrears journey, a `funding_application` entity must be created. This entity is created from the dashboard when querying for large applications - when the above criteria is met, a new large funding application is created.
 
 The funding application is populated with the minimum required data to progress, including: a salesforce case ID, project reference, submitted on date, status and award type. 
+
+A payment request entity is also then created and attached to the funding application when the user enters the large arrears journey, and the user is redirected straight into the arrears task page (with only payment tasks to complete). 
+
+
 
 ### Journey selection and task page [MEDIUM ONLY]
 
