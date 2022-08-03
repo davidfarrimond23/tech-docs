@@ -1,44 +1,12 @@
 ## Payment in Arrears
 
-The payment in arrears journey is used for Medium 2 (100k-250k) and Large Applications when an applicant wants to:
+The payment in arrears journey is used for Medium 2 (100k-250k) and Large Applications > 100k when an applicant wants to:
 
 - Submit a project update to an investment manager, 
 - Detail spends carried out on the project thus far, 
 - Submit bank details to request an arrears payment for the funds spent.
 
-### Criteria for starting the journey - from the dashboard
-
-Funding Frontend checks that:
-
-#### Medium:
-
-- If the application is between 100k-200k (Medium 2) award type,
-- and the legal agreement for the application is in place in SF, as marked by the `Legal_agreement_in_place__c` checkbox.
-
-If these criteria are met then the project appears in the awarded section of the dashboard in Funding Frontend
-and the project title shows as a link that can be clicked on to start the journey.
-
-#### Large:
-
-- The FFE account email matches that used by the Salesforce User and Contact against the application. 
-- The application is either a large delivery or large development award type,
-- permission to start has been submitted. 
-- and the legal agreement for the given application is in-place in Salesforce (the PTS form is at the completed stage)
-
-If these criteria are met then the project title link will become active under the respective delivery/development awarded section of Funding Frontend and can now be clicked on to start the journey.
-
-**NOTE: For large applications the journey selector is skipped and the user can only submit a payment request at this current time**
-
-In order for a large application to progress through the arrears journey, a `funding_application` entity must be created. This entity is created from the dashboard when querying for large applications - when the above criteria is met, a new large funding application is created. 
-
-If the matching FFE account contains a differing salesforce_account_id to the large application, then an error is raised and no funding applications are created. This scenario is a support issue that requires a manual intervention and Data Zap to correct. 
-
-The funding application is populated with the minimum required data to progress, including: a salesforce case ID, project reference, submitted on date, status and award type. 
-
-A `arrears_journey_tracker` is created against the funding application and a `payment request` entity attached when the user enters the large arrears journey. The user is then redirected straight into the arrears task page (with only payment tasks to complete). 
-
-
-### Journey selection and task page [MEDIUM 100-250k ONLY]
+### Journey selection and task page
 
 Upon entering the start page of the arrears journey an `arrears_journey_tracker` entity is created to track the progress of the user. The user will be asked to select their journey type: whether they would like to give a progress update, a payment request, or both. Upon making their selection, the respective `progress_update` and `payment_request` entities are instantiated and linked to the journey_tacker. 
 
@@ -123,3 +91,36 @@ If the user has chosen to not provide any information in regards to their journe
 Note: in this scenario, an empty object may be created against the Salesforce project, but no data is ever uploaded. 
 
 Finally, the `arrears_journey_tracker` is deleted, with any related `progress_update` or `payment_request` entities being moved over to a new `completed_arrears_journey` entry against the `funding_application`. Allowing the user to view all the data they have entered against previous arrears journeys. 
+
+
+### Criteria for starting the journey - from the dashboard
+
+Funding Frontend checks that:
+
+#### Medium:
+
+- If the application is between 100k-200k (Medium 2) award type,
+- and the legal agreement for the application is in place in SF, as marked by the `Legal_agreement_in_place__c` checkbox.
+
+If these criteria are met then the project appears in the awarded section of the dashboard in Funding Frontend
+and the project title shows as a link that can be clicked on to start the journey.
+
+#### Large:
+
+- The FFE account email matches that used by the Salesforce User and Contact against the application. 
+- The application is either a large delivery or large development award type,
+- permission to start has been submitted. 
+- and the legal agreement for the given application is in-place in Salesforce (the PTS form is at the completed stage)
+
+If these criteria are met then the project title link will become active under the respective delivery/development awarded section of Funding Frontend and can now be clicked on to start the journey.
+
+
+**NOTE: For large applications the journey selector is skipped and the user can only submit a payment request at this current time**
+
+In order for a large application to progress through the arrears journey, a `funding_application` entity must be created. This entity is created from the dashboard when querying for large applications - when the above criteria is met, a new large funding application is created. 
+
+If the matching FFE account contains a differing salesforce_account_id to the large application, then an error is raised and no funding applications are created. This scenario is a support issue that requires a manual intervention and Data Zap to correct. 
+
+The funding application is populated with the minimum required data to progress, including: a salesforce case ID, project reference, submitted on date, status and award type. 
+
+A `arrears_journey_tracker` is created against the funding application and a `payment request` entity attached when the user enters the large arrears journey. The user is then redirected straight into the arrears task page (with only payment tasks to complete). 

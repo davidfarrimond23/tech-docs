@@ -18,7 +18,3 @@ will end by submitting a signed permission to start document back to Salesforce.
 
 This signed document will be uploaded against a 'Large Grants Permission to Start'
 record which can be found in the Forms tab of the large application in Salesforce.
-
-### Payment
-The payment process is manual. Eventually Salesforce and Funding Frontend will
-be developed to help with this.
