@@ -1,6 +1,6 @@
 ## Payment in Arrears
 
-The payment in arrears journey is what an applicant uses to:
+The payment in arrears journey is used for Medium 2 (100k-250k) and Large Applications when an applicant wants to:
 
 - Submit a project update to an investment manager, 
 - Detail spends carried out on the project thus far, 
@@ -27,7 +27,7 @@ and the project title shows as a link that can be clicked on to start the journe
 
 If these criteria are met then the project title link will become active under the respective delivery/development awarded section of Funding Frontend and can now be clicked on to start the journey.
 
-**NOTE: For large applications the journey selector is skipped and the user can only submit a payment request**
+**NOTE: For large applications the journey selector is skipped and the user can only submit a payment request at this current time**
 
 In order for a large application to progress through the arrears journey, a `funding_application` entity must be created. This entity is created from the dashboard when querying for large applications - when the above criteria is met, a new large funding application is created. 
 
@@ -38,7 +38,7 @@ The funding application is populated with the minimum required data to progress,
 A `arrears_journey_tracker` is created against the funding application and a `payment request` entity attached when the user enters the large arrears journey. The user is then redirected straight into the arrears task page (with only payment tasks to complete). 
 
 
-### Journey selection and task page [MEDIUM ONLY]
+### Journey selection and task page [MEDIUM 100-250k ONLY]
 
 Upon entering the start page of the arrears journey an `arrears_journey_tracker` entity is created to track the progress of the user. The user will be asked to select their journey type: whether they would like to give a progress update, a payment request, or both. Upon making their selection, the respective `progress_update` and `payment_request` entities are instantiated and linked to the journey_tacker. 
 
