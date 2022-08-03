@@ -29,12 +29,13 @@ If these criteria are met then the project title link will become active under t
 
 **NOTE: For large applications the journey selector is skipped and the user can only submit a payment request**
 
-In order for a large application to progress through the arrears journey, a `funding_application` entity must be created. This entity is created from the dashboard when querying for large applications - when the above criteria is met, a new large funding application is created.
+In order for a large application to progress through the arrears journey, a `funding_application` entity must be created. This entity is created from the dashboard when querying for large applications - when the above criteria is met, a new large funding application is created. 
+
+If the matching FFE account contains a differing salesforce_account_id to the large application, then an error is raised and no funding applications are created. This scenario is a support issue that requires a manual intervention and Data Zap to correct. 
 
 The funding application is populated with the minimum required data to progress, including: a salesforce case ID, project reference, submitted on date, status and award type. 
 
-A payment request entity is also then created and attached to the funding application when the user enters the large arrears journey, and the user is redirected straight into the arrears task page (with only payment tasks to complete). 
-
+A `arrears_journey_tracker` is created against the funding application and a `payment request` entity attached when the user enters the large arrears journey. The user is then redirected straight into the arrears task page (with only payment tasks to complete). 
 
 
 ### Journey selection and task page [MEDIUM ONLY]
